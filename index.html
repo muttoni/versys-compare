@@ -204,7 +204,7 @@
 </div>
 
 <script>
-const KEY = 'versys_listings_v6';
+const KEY = 'versys_listings_v7';
 
 const DEFAULTS = [
   {
@@ -246,6 +246,14 @@ const DEFAULTS = [
     notes:'"Pari al nuovo", 3.5 yrs warranty left. Paid >€10k. PRICE FIRM (non trattabile). Sept 2025. WhatsApp before calling. Fully loaded — nothing left to add. Closest of all (~20 min).',
     imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/5b/5bf1ccfc-466f-4a1f-89a9-eef6fbfef883?rule=gallery-mobile-1x-auto'],
     url:'https://www.subito.it/moto-e-scooter/kawasaki-versys-650-grand-tourer-2025-verona-645778197.htm'
+  },
+  {
+    id:'tracer_vr', seller:'Tracer 7 GT (Verona)', model:'Tracer 7 GT', loc:'Verona (VR)', price:6999, bags:0, km:10700,
+    dist:20, year:'11/2023', power:'full',
+    kit:'GT package: side panniers + tall comfort screen (+ typically heated grips / comfort seat / quickshifter). Official Yamaha engine crash bars, official sidestand foot enlarger, official side-case inner bags. Always Yamaha-serviced, always garaged.',
+    notes:'↔ DIFFERENT MODEL — Yamaha Tracer 7 (73hp CP2, ~196kg) vs Versys (66hp, ~216kg). More power, lighter, more engaging engine. Old-gen (pre-MY2025) — fair price. Careful private seller: no trades, no lowballs, €250 deposit to hold, instant bank transfer in person at handover. ~20 min away.',
+    imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/0b/0b182b56-b80d-4f21-b86a-7a8c97b39f55?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/70/70a10df0-5732-4bb9-ac48-039b86cd50ba?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/ae/ae989b7b-dbab-4ee7-9cfd-9ed42f45a446?rule=gallery-mobile-1x-auto'],
+    url:'https://www.subito.it/moto-e-scooter/yamaha-tracer-7-gt-black-verona-614830855.htm'
   }
 ];
 
@@ -304,6 +312,8 @@ function render(){
     const powTag = l.power==='full'
       ? '<span class="tag good">Full power</span>'
       : '<span class="tag bad">35 kW / A2</span>';
+    const modelTag = (l.model && l.model!=='Versys 650')
+      ? `<span class="tag info">↔ ${l.model}</span>` : '';
     const kmTag = l.km<=500?'<span class="tag good">~new</span>':(l.km>=9000?'<span class="tag warn">higher km</span>':'<span class="tag info">low km</span>');
     const bagsTag = (l.bags>0)?`<span class="tag warn">bags +${euro(l.bags)}</span>`:'';
     const distTag = l.dist<=60?'<span class="tag good">close</span>':(l.dist>=110?'<span class="tag warn">far</span>':'');
@@ -325,7 +335,7 @@ function render(){
         ${sortBy==='score'?`<div class="rank ${rankClass}">${rankByScore===0?'🥇 Best':rankByScore===1?'🥈 2nd':'🥉 3rd'}</div>`:''}
         <h3><span>${l.seller}</span><span class="price">${euro(l.price)}${l.bags>0?`<small> +${euro(l.bags)} bags</small>`:''}</span></h3>
         <div class="loc">📍 ${l.loc} · ${l.year||''}</div>
-        <div>${powTag}${kmTag}${distTag}${bagsTag}</div>
+        <div>${modelTag}${powTag}${kmTag}${distTag}${bagsTag}</div>
         <div class="rows" style="margin-top:8px">
           <div class="row"><span class="k">Mileage</span><span class="v">${Number(l.km).toLocaleString('it-IT')} km</span></div>
           <div class="row"><span class="k">Distance</span><span class="v">${fmtDist(l.dist)}</span></div>
