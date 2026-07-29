@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Versys 650 — Listing Comparator</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2a2f3a;
+    --txt:#e7eaf0; --muted:#9aa3b2; --accent:#3ba55d; --accent2:#4ea1ff;
+    --warn:#e0a83a; --bad:#e05a5a; --good:#3ba55d; --gold:#ffd24a;
+    --chip:#232833;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--txt);line-height:1.5;-webkit-font-smoothing:antialiased}
+  header{padding:22px 20px 12px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#161a22,#0f1115)}
+  h1{margin:0;font-size:22px;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:13px;margin-top:4px}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
+  .btn{background:var(--accent);color:#fff;border:0;padding:9px 14px;border-radius:8px;
+    font-size:14px;cursor:pointer;font-weight:600}
+  .btn.secondary{background:var(--chip);color:var(--txt);border:1px solid var(--line)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}
+  .btn:hover{filter:brightness(1.08)}
+  select,input,textarea{background:var(--panel2);color:var(--txt);border:1px solid var(--line);
+    border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;position:relative;
+    transition:transform .12s ease,border-color .12s}
+  .card:hover{transform:translateY(-2px);border-color:#3a4150}
+  .card.win{border-color:var(--gold);box-shadow:0 0 0 1px rgba(255,210,74,.25)}
+  .rank{position:absolute;top:-10px;left:14px;font-size:12px;font-weight:700;
+    background:var(--gold);color:#111;padding:3px 9px;border-radius:20px}
+  .rank.silver{background:#c7ccd6}.rank.bronze{background:#cd8a4b;color:#fff}
+  .card h3{margin:2px 0 2px;font-size:17px;display:flex;align-items:center;gap:8px;justify-content:space-between}
+  .price{font-size:22px;font-weight:800;color:var(--accent2)}
+  .price small{font-size:12px;color:var(--muted);font-weight:500}
+  .loc{color:var(--muted);font-size:13px;margin-bottom:10px}
+  .rows{font-size:13.5px}
+  .row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed #242a34}
+  .row:last-child{border-bottom:0}
+  .row .k{color:var(--muted)}
+  .row .v{font-weight:600;text-align:right}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;margin:2px 4px 2px 0}
+  .tag.good{background:rgba(59,165,93,.16);color:#7ede9d}
+  .tag.warn{background:rgba(224,168,58,.16);color:#f0c877}
+  .tag.bad{background:rgba(224,90,90,.16);color:#f0a0a0}
+  .tag.info{background:rgba(78,161,255,.14);color:#a8ccff}
+  .kit{margin-top:10px;font-size:12.5px;color:var(--muted)}
+  .kit b{color:var(--txt)}
+  .scorebar{height:7px;border-radius:6px;background:#20252f;margin-top:12px;overflow:hidden}
+  .scorebar i{display:block;height:100%;background:linear-gradient(90deg,#3ba55d,#4ea1ff)}
+  .score-lbl{font-size:12px;color:var(--muted);margin-top:5px;display:flex;justify-content:space-between}
+  .cardacts{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+  .mini{font-size:12px;padding:6px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--muted);cursor:pointer}
+  .mini:hover{color:var(--txt);border-color:#3a4150}
+  .mini.del:hover{color:var(--bad);border-color:var(--bad)}
+  /* table */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin-top:8px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:680px}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{background:var(--panel2);color:var(--muted);font-weight:600;position:sticky;top:0}
+  tr:hover td{background:#151922}
+  td.best{color:#7ede9d;font-weight:700}
+  td.worst{color:#f0a0a0}
+  .hidden{display:none}
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-start;
+    justify-content:center;padding:40px 16px;z-index:50;overflow:auto}
+  .overlay.open{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;width:100%;
+    max-width:560px;padding:20px}
+  .modal h2{margin:0 0 14px;font-size:18px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+  .field label{font-size:12px;color:var(--muted)}
+  .field.full{grid-column:1/-1}
+  .modalacts{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+  .note{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+    font-size:13px;color:var(--muted);margin-top:18px}
+  .note b{color:var(--txt)}
+  .legend{font-size:12px;color:var(--muted);margin:6px 0 0}
+  .sectitle{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+    margin:26px 0 6px;font-weight:700}
+  a{color:var(--accent2)}
+  .foot{color:var(--muted);font-size:12px;text-align:center;padding:24px 0 8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap" style="padding-top:0;padding-bottom:0">
+    <h1>🏍️ Kawasaki Versys 650 — Listing Comparator</h1>
+    <div class="sub">First bike · 191 cm rider · base near Parona (VR) · explore + light trips. Data persists in your browser.</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <button class="btn" onclick="openAdd()">+ Add listing</button>
+    <label class="legend">Sort:</label>
+    <select id="sortBy" onchange="render()">
+      <option value="score">Best overall (score)</option>
+      <option value="priceAll">Price (all-in, low→high)</option>
+      <option value="km">Mileage (low→high)</option>
+      <option value="dist">Distance (near→far)</option>
+    </select>
+    <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)">
+      <input type="checkbox" id="wantBags" onchange="render()"> I want the side bags
+    </label>
+    <button class="btn ghost" onclick="resetData()">Reset to defaults</button>
+    <button class="btn secondary" onclick="toggleTable()">Toggle table view</button>
+  </div>
+
+  <div id="cards" class="cards"></div>
+
+  <div id="tablesec" class="hidden">
+    <div class="sectitle">Side-by-side</div>
+    <div class="tablewrap"><table id="tbl"></table></div>
+    <div class="legend">Green = best in column · red = worst. All-in price includes bags only when "I want the side bags" is checked.</div>
+  </div>
+
+  <div class="note" id="verdict"></div>
+
+  <div class="sectitle">How the score works</div>
+  <div class="note">
+    Weighted for <b>your</b> profile (first bike, explore + light trips, tall rider):
+    <b>Price</b> (all-in) 30% · <b>Mileage</b> 20% · <b>Distance</b> 15% ·
+    <b>Warranty runway</b> 10% · <b>Accessory kit</b> 15% · <b>Full power vs A2</b> 10%.
+    All Versys 650s share the same 840 mm seat, so ergonomics are a wash — the score ignores fit and focuses on value/condition/convenience.
+  </div>
+
+  <div class="foot">Built for Andrea · edit anytime · <span id="count"></span> listings tracked</div>
+</div>
+
+<!-- Add/Edit modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="modalTitle">Add listing</h2>
+    <input type="hidden" id="f_id">
+    <div class="grid2">
+      <div class="field"><label>Seller / label</label><input id="f_seller" placeholder="e.g. Marco"></div>
+      <div class="field"><label>Location</label><input id="f_loc" placeholder="e.g. Verona (VR)"></div>
+      <div class="field"><label>Price (€)</label><input id="f_price" type="number" placeholder="6500"></div>
+      <div class="field"><label>Bags cost extra (€, 0 if none)</label><input id="f_bags" type="number" placeholder="0"></div>
+      <div class="field"><label>Mileage (km)</label><input id="f_km" type="number" placeholder="6500"></div>
+      <div class="field"><label>Distance from Parona (min)</label><input id="f_dist" type="number" placeholder="60"></div>
+      <div class="field"><label>Year / registration</label><input id="f_year" placeholder="03/2025"></div>
+      <div class="field"><label>Power</label>
+        <select id="f_power"><option value="full">Full power</option><option value="a2">35 kW / A2</option></select>
+      </div>
+      <div class="field full"><label>Accessories / kit</label>
+        <textarea id="f_kit" rows="2" placeholder="handguards, engine bars, radiator guard, tinted screen..."></textarea></div>
+      <div class="field full"><label>Notes (seller, flexibility, red flags)</label>
+        <textarea id="f_notes" rows="2" placeholder="e.g. price firm; brand-new seller account"></textarea></div>
+      <div class="field full"><label>Listing URL (optional)</label><input id="f_url" placeholder="https://www.subito.it/..."></div>
+    </div>
+    <div class="modalacts">
+      <button class="btn ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn" onclick="saveListing()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const KEY = 'versys_listings_v1';
+
+const DEFAULTS = [
+  {
+    id:'gianni', seller:'Gianni', loc:'Vicenza (VI)', price:6900, bags:0, km:60,
+    dist:45, year:'04/2025', power:'full',
+    kit:'Handguards (paramani), frame sliders (tamponi). No luggage.',
+    notes:'Basically new (60 km). Full warranty runway. Some price flex — been sitting. Anchor ~€6,500.',
+    url:'https://www.subito.it/moto-e-scooter/versys-650-kawasaki-vicenza-628493254.htm'
+  },
+  {
+    id:'francesco', seller:'Francesco', loc:'Marcon (VE)', price:6000, bags:0, km:6500,
+    dist:75, year:'03/2025', power:'full',
+    kit:'Handguards, USB, tinted screen (cupolino fumé), engine crash bars (paramotore), radiator guard, Barracuda tail-tidy + plate light, Barracuda front/rear indicators, aftermarket brake/clutch levers.',
+    notes:'Best-equipped. Price FIRM (non trattabile). Serviced (tagliandata). No bags mentioned.',
+    url:'https://www.subito.it/moto-e-scooter/versys-650-venezia-649697891.htm'
+  },
+  {
+    id:'daniele', seller:'Daniele', loc:'Alpago (BL)', price:6000, bags:500, km:10000,
+    dist:120, year:'03/2025', power:'a2',
+    kit:'Side panniers (+€500), USB, handguards, new tires (March), fresh service. Possibility to add GIVI bags.',
+    notes:'35 kW / A2 version — de-restriction step needed for full power. Highest mileage, farthest. Still under warranty.',
+    url:'https://www.subito.it/moto-e-scooter/kavasaki-versys-650-belluno-649569413.htm'
+  }
+];
+
+let data = load();
+
+function load(){
+  try{ const s=localStorage.getItem(KEY); if(s) return JSON.parse(s); }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULTS));
+}
+function save(){ localStorage.setItem(KEY, JSON.stringify(data)); }
+function resetData(){ if(confirm('Reset to the 3 default listings? Your added/edited listings will be lost.')){ data=JSON.parse(JSON.stringify(DEFAULTS)); save(); render(); } }
+
+// scoring — higher is better, 0..100
+function allIn(l, wantBags){ return l.price + (wantBags ? (l.bags||0) : 0); }
+function scoreOf(l, wantBags, arr){
+  const prices = arr.map(x=>allIn(x,wantBags));
+  const kms = arr.map(x=>x.km);
+  const dists = arr.map(x=>x.dist);
+  const norm=(v,a,invert)=>{ const mn=Math.min(...a),mx=Math.max(...a); if(mx===mn)return 1; const t=(v-mn)/(mx-mn); return invert?1-t:t; };
+  const sPrice = norm(allIn(l,wantBags), prices, true);   // cheaper better
+  const sKm    = norm(l.km, kms, true);                   // fewer km better
+  const sDist  = norm(l.dist, dists, true);               // closer better
+  const sWarr  = norm(l.km, kms, true);                   // proxy: fewer km = more warranty runway
+  // kit richness by counting comma-separated items
+  const kitCount = (l.kit||'').split(',').filter(x=>x.trim()).length;
+  const kitScores = arr.map(x=>(x.kit||'').split(',').filter(y=>y.trim()).length);
+  const sKit = norm(kitCount, kitScores, false);
+  const sPow = l.power==='full'?1:0;
+  const total = sPrice*0.30 + sKm*0.20 + sDist*0.15 + sWarr*0.10 + sKit*0.15 + sPow*0.10;
+  return Math.round(total*100);
+}
+
+function fmtDist(m){ if(m>=60){const h=Math.floor(m/60),mm=m%60; return `~${h}h${mm?String(mm).padStart(2,'0'):''}`;} return `~${m} min`; }
+function euro(n){ return '€'+Number(n).toLocaleString('it-IT'); }
+
+function render(){
+  const wantBags = document.getElementById('wantBags').checked;
+  const sortBy = document.getElementById('sortBy').value;
+  // compute scores
+  data.forEach(l=> l._score = scoreOf(l, wantBags, data));
+  let arr = [...data];
+  arr.sort((a,b)=>{
+    if(sortBy==='score') return b._score-a._score;
+    if(sortBy==='priceAll') return allIn(a,wantBags)-allIn(b,wantBags);
+    if(sortBy==='km') return a.km-b.km;
+    if(sortBy==='dist') return a.dist-b.dist;
+    return 0;
+  });
+
+  // cards
+  const c=document.getElementById('cards'); c.innerHTML='';
+  arr.forEach((l,i)=>{
+    const rankByScore = [...data].sort((a,b)=>b._score-a._score).findIndex(x=>x.id===l.id);
+    const isWin = (sortBy==='score' && i===0);
+    const rankClass = rankByScore===0?'':(rankByScore===1?'silver':'bronze');
+    const powTag = l.power==='full'
+      ? '<span class="tag good">Full power</span>'
+      : '<span class="tag bad">35 kW / A2</span>';
+    const kmTag = l.km<=500?'<span class="tag good">~new</span>':(l.km>=9000?'<span class="tag warn">higher km</span>':'<span class="tag info">low km</span>');
+    const bagsTag = (l.bags>0)?`<span class="tag warn">bags +${euro(l.bags)}</span>`:'';
+    const distTag = l.dist<=60?'<span class="tag good">close</span>':(l.dist>=110?'<span class="tag warn">far</span>':'');
+    c.insertAdjacentHTML('beforeend', `
+      <div class="card ${isWin?'win':''}">
+        ${sortBy==='score'?`<div class="rank ${rankClass}">${rankByScore===0?'🥇 Best':rankByScore===1?'🥈 2nd':'🥉 3rd'}</div>`:''}
+        <h3><span>${l.seller}</span><span class="price">${euro(l.price)}${l.bags>0?`<small> +${euro(l.bags)} bags</small>`:''}</span></h3>
+        <div class="loc">📍 ${l.loc} · ${l.year||''}</div>
+        <div>${powTag}${kmTag}${distTag}${bagsTag}</div>
+        <div class="rows" style="margin-top:8px">
+          <div class="row"><span class="k">Mileage</span><span class="v">${Number(l.km).toLocaleString('it-IT')} km</span></div>
+          <div class="row"><span class="k">Distance</span><span class="v">${fmtDist(l.dist)}</span></div>
+          <div class="row"><span class="k">All-in price</span><span class="v">${euro(allIn(l,wantBags))}</span></div>
+        </div>
+        <div class="kit"><b>Kit:</b> ${l.kit||'—'}</div>
+        ${l.notes?`<div class="kit"><b>Notes:</b> ${l.notes}</div>`:''}
+        <div class="scorebar"><i style="width:${l._score}%"></i></div>
+        <div class="score-lbl"><span>Overall fit for you</span><span>${l._score}/100</span></div>
+        <div class="cardacts">
+          ${l.url?`<a class="mini" href="${l.url}" target="_blank" rel="noopener">Open listing ↗</a>`:''}
+          <button class="mini" onclick="editListing('${l.id}')">Edit</button>
+          <button class="mini del" onclick="delListing('${l.id}')">Delete</button>
+        </div>
+      </div>`);
+  });
+
+  renderTable(arr, wantBags);
+  renderVerdict(arr, wantBags);
+  document.getElementById('count').textContent = data.length;
+}
+
+function renderTable(arr, wantBags){
+  const cols=[
+    {k:'seller',t:'Seller'},{k:'loc',t:'Location'},
+    {k:'_price',t:'Price', v:l=>euro(l.price)},
+    {k:'_allin',t:'All-in', v:l=>euro(allIn(l,wantBags)), num:l=>allIn(l,wantBags), lowBest:true},
+    {k:'km',t:'Km', v:l=>Number(l.km).toLocaleString('it-IT'), num:l=>l.km, lowBest:true},
+    {k:'dist',t:'Distance', v:l=>fmtDist(l.dist), num:l=>l.dist, lowBest:true},
+    {k:'power',t:'Power', v:l=>l.power==='full'?'Full':'A2 35kW'},
+    {k:'_score',t:'Score', v:l=>l._score, num:l=>l._score, lowBest:false},
+  ];
+  let h='<thead><tr>'+cols.map(c=>`<th>${c.t}</th>`).join('')+'</tr></thead><tbody>';
+  cols.forEach(c=>{ if(c.num){ const vals=arr.map(c.num); c._best=c.lowBest?Math.min(...vals):Math.max(...vals); c._worst=c.lowBest?Math.max(...vals):Math.min(...vals);} });
+  arr.forEach(l=>{
+    h+='<tr>'+cols.map(c=>{
+      const val = c.v?c.v(l):l[c.k];
+      let cls='';
+      if(c.num){ const n=c.num(l); if(n===c._best)cls='best'; else if(n===c._worst)cls='worst'; }
+      return `<td class="${cls}">${val}</td>`;
+    }).join('')+'</tr>';
+  });
+  h+='</tbody>';
+  document.getElementById('tbl').innerHTML=h;
+}
+
+function renderVerdict(arr, wantBags){
+  const best = [...data].sort((a,b)=>scoreOf(b,wantBags,data)-scoreOf(a,wantBags,data))[0];
+  const cheapest = [...data].sort((a,b)=>allIn(a,wantBags)-allIn(b,wantBags))[0];
+  const el=document.getElementById('verdict');
+  el.innerHTML = `<b>Current call:</b> Best overall is <b>${best.seller}</b> (${best.loc}) at ${euro(allIn(best,wantBags))}, score ${scoreOf(best,wantBags,data)}/100. `
+    + `Cheapest all-in is <b>${cheapest.seller}</b> at ${euro(allIn(cheapest,wantBags))}. `
+    + (wantBags?`<br>Bags <b>included</b> in all-in pricing.`:`<br>Bags <b>excluded</b> — tick the box above to fold them in.`);
+}
+
+function toggleTable(){ document.getElementById('tablesec').classList.toggle('hidden'); }
+
+// modal
+function openAdd(){
+  document.getElementById('modalTitle').textContent='Add listing';
+  ['f_id','f_seller','f_loc','f_price','f_bags','f_km','f_dist','f_year','f_kit','f_notes','f_url'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f_power').value='full';
+  document.getElementById('overlay').classList.add('open');
+}
+function editListing(id){
+  const l=data.find(x=>x.id===id); if(!l)return;
+  document.getElementById('modalTitle').textContent='Edit listing';
+  f_id.value=l.id; f_seller.value=l.seller; f_loc.value=l.loc; f_price.value=l.price;
+  f_bags.value=l.bags||0; f_km.value=l.km; f_dist.value=l.dist; f_year.value=l.year||'';
+  f_power.value=l.power; f_kit.value=l.kit||''; f_notes.value=l.notes||''; f_url.value=l.url||'';
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
+function saveListing(){
+  const id=f_id.value||('l'+Date.now());
+  const obj={ id, seller:f_seller.value||'Untitled', loc:f_loc.value||'', price:+f_price.value||0,
+    bags:+f_bags.value||0, km:+f_km.value||0, dist:+f_dist.value||0, year:f_year.value,
+    power:f_power.value, kit:f_kit.value, notes:f_notes.value, url:f_url.value };
+  const i=data.findIndex(x=>x.id===id);
+  if(i>=0) data[i]=obj; else data.push(obj);
+  save(); closeModal(); render();
+}
+function delListing(id){ if(confirm('Delete this listing?')){ data=data.filter(x=>x.id!==id); save(); render(); } }
+
+document.getElementById('overlay').addEventListener('click',e=>{ if(e.target.id==='overlay') closeModal(); });
+render();
+</script>
+</body>
+</html>
