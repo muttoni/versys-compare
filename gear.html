@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beginner Moto Gear — Checklist</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2a2f3a;
+    --txt:#e7eaf0; --muted:#9aa3b2; --accent:#3ba55d; --accent2:#4ea1ff;
+    --warn:#e0a83a; --bad:#e05a5a; --gold:#ffd24a; --chip:#232833;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--txt);line-height:1.5;-webkit-font-smoothing:antialiased}
+  header{padding:20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#161a22,#0f1115)}
+  h1{margin:0;font-size:21px}
+  .sub{color:var(--muted);font-size:13px;margin-top:4px}
+  .wrap{max-width:920px;margin:0 auto;padding:20px}
+  .tiers{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+  .tier{background:var(--chip);border:1px solid var(--line);color:var(--txt);padding:8px 13px;
+    border-radius:8px;cursor:pointer;font-size:13px;font-weight:600}
+  .tier:hover{border-color:#3a4150}
+  .tier.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .legend{font-size:12px;color:var(--muted);margin:2px 0 14px}
+  .cat{margin:22px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--muted);font-weight:700;display:flex;align-items:center;gap:8px}
+  .cat .pill{background:var(--chip);color:var(--muted);font-weight:600;padding:2px 8px;border-radius:20px;
+    text-transform:none;letter-spacing:0}
+  .item{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);
+    border-radius:11px;padding:12px 14px;margin-bottom:9px;transition:border-color .12s}
+  .item:hover{border-color:#3a4150}
+  .item.checked{border-color:var(--accent);background:#15211a}
+  .item input[type=checkbox]{width:20px;height:20px;margin-top:2px;accent-color:var(--accent);flex:0 0 auto;cursor:pointer}
+  .item .body{flex:1;min-width:0}
+  .item .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .item .name{font-weight:700;font-size:15px}
+  .item .price{font-weight:700;color:var(--accent2);white-space:nowrap}
+  .item .why{color:var(--muted);font-size:13px;margin-top:2px}
+  .item .meta{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .badge{font-size:11px;padding:2px 8px;border-radius:20px}
+  .badge.ess{background:rgba(224,90,90,.16);color:#f0a0a0}
+  .badge.rec{background:rgba(224,168,58,.16);color:#f0c877}
+  .badge.opt{background:rgba(78,161,255,.14);color:#a8ccff}
+  .badge.range{background:var(--chip);color:var(--muted)}
+  .shops a{color:var(--accent2);font-size:12px;margin-right:8px;text-decoration:none}
+  .shops a:hover{text-decoration:underline}
+  .summary{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(15,17,21,0),#0f1115 40%);
+    padding:14px 0 6px;margin-top:10px}
+  .sumcard{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+  .sumcard .big{font-size:26px;font-weight:800;color:var(--accent)}
+  .sumcard .lbl{font-size:12px;color:var(--muted)}
+  .sumcard .picked{font-size:13px;color:var(--muted)}
+  .bar{height:8px;border-radius:6px;background:#20252f;margin-top:10px;overflow:hidden}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,#3ba55d,#4ea1ff)}
+  .note{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px;
+    font-size:13px;color:var(--muted);margin-top:18px}
+  .note b{color:var(--txt)}
+  .foot{color:var(--muted);font-size:12px;text-align:center;padding:22px 0 8px}
+  .toprow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .clearbtn{background:transparent;border:1px solid var(--line);color:var(--muted);
+    padding:7px 12px;border-radius:8px;font-size:13px;cursor:pointer}
+  .clearbtn:hover{color:var(--txt);border-color:#3a4150}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap" style="padding:0">
+    <div class="toprow">
+      <div>
+        <h1>🪖 Beginner Moto Gear — Checklist</h1>
+        <div class="sub">191 cm rider · Italy · first bike · explore + light trips. Prices in €, mid-market estimates. Saved in your browser.</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tiers">
+    <span style="font-size:13px;color:var(--muted);align-self:center;margin-right:4px">Quick presets:</span>
+    <button class="tier" onclick="preset('essentials')">Essentials only</button>
+    <button class="tier" onclick="preset('recommended')">Recommended kit</button>
+    <button class="tier" onclick="preset('full')">Do-it-right (all)</button>
+    <button class="clearbtn" onclick="preset('none')">Clear all</button>
+  </div>
+  <div class="legend">Toggle the checkbox to include an item in your total. Price used = the “sweet spot” mid estimate.</div>
+
+  <div id="list"></div>
+
+  <div class="summary">
+    <div class="sumcard">
+      <div>
+        <div class="lbl">Estimated total (checked items)</div>
+        <div class="big" id="total">€0</div>
+        <div class="picked" id="picked">0 items selected</div>
+      </div>
+      <div style="text-align:right">
+        <div class="lbl">If you bought everything</div>
+        <div style="font-size:18px;font-weight:700" id="maxtotal">€0</div>
+        <div class="picked" id="rangelbl"></div>
+      </div>
+    </div>
+    <div class="bar"><i id="bar" style="width:0%"></i></div>
+  </div>
+
+  <div class="note">
+    <b>Priority order if money's tight:</b> Helmet → Gloves → Jacket → Boots → Pants. Never cheap out on the helmet, and
+    <b>buy it in person</b> (head shapes differ). <b>At 191 cm</b>, favor brands with long cuts — Rev'it!, Dainese, Alpinestars, Spidi.
+    If you land Massimo's bike (already has luggage), skip the tank/tail bag and put that toward a better helmet or the intercom.
+  </div>
+
+  <div class="foot">Built for Andrea 🗡️ · estimates only, real prices vary · <span id="count"></span></div>
+</div>
+
+<script>
+const KEY='moto_gear_v1';
+
+const ITEMS = [
+  // cat, name, why, min, mid, max, tier, shops
+  {cat:'Essentials (ATGATT)', name:'Helmet — full-face, ECE 22.06', why:'The one thing you never cheap out on. AGV K3, Shoei entry, HJC, Scorpion.', min:150, mid:250, max:500, tier:'ess'},
+  {cat:'Essentials (ATGATT)', name:'Jacket — CE armor + back protector', why:'Abrasion + impact. Textile, all-season with removable liner is most versatile.', min:150, mid:250, max:400, tier:'ess'},
+  {cat:'Essentials (ATGATT)', name:'Gloves — CE, knuckle armor', why:'Hands hit the ground first, every time.', min:40, mid:70, max:120, tier:'ess'},
+  {cat:'Essentials (ATGATT)', name:'Trousers — riding jeans/pants, CE hip+knee armor', why:'Kevlar-lined jeans or textile pants. Don\u2019t ride in normal denim.', min:120, mid:180, max:300, tier:'ess'},
+  {cat:'Essentials (ATGATT)', name:'Boots — over-the-ankle, CE', why:'Ankles/feet are highly vulnerable. Over-ankle minimum.', min:100, mid:150, max:250, tier:'ess'},
+
+  {cat:'Strongly recommended', name:'Back protector — CE Level 2', why:'If your jacket doesn\u2019t include one. Spine is priceless.', min:40, mid:65, max:90, tier:'rec'},
+  {cat:'Strongly recommended', name:'Rain over-suit', why:'Italy weather \u2014 you will get caught out eventually.', min:40, mid:60, max:90, tier:'rec'},
+  {cat:'Strongly recommended', name:'Bluetooth intercom (Cardo/Sena)', why:'GPS nav prompts + music in-helmet. Huge for exploring instead of squinting at a phone.', min:90, mid:150, max:250, tier:'rec'},
+  {cat:'Strongly recommended', name:'Base layers / neck tube', why:'Comfort, wind, sweat management.', min:30, mid:45, max:60, tier:'rec'},
+
+  {cat:'Practical extras', name:'Disc lock or chain lock', why:'Italy = bike-theft country. Get one.', min:30, mid:50, max:80, tier:'opt'},
+  {cat:'Practical extras', name:'Phone mount (Quad Lock etc.)', why:'For navigation on the bars.', min:40, mid:55, max:70, tier:'opt'},
+  {cat:'Practical extras', name:'Tank/tail bag', why:'Only if the bike lacks luggage (skip if you get Massimo\u2019s).', min:50, mid:85, max:120, tier:'opt'},
+  {cat:'Practical extras', name:'Tire gauge + basic tools', why:'Check pressures, minor roadside fixes.', min:15, mid:20, max:30, tier:'opt'},
+];
+
+const SHOPS = [
+  {n:'Motostorm', u:'https://www.motostorm.it/'},
+  {n:'XLmoto', u:'https://www.xlmoto.it/'},
+  {n:'Louis', u:'https://www.louis-moto.it/'},
+];
+
+let state = load();
+function load(){ try{const s=localStorage.getItem(KEY); if(s)return JSON.parse(s);}catch(e){} 
+  // default: essentials checked
+  const o={}; ITEMS.forEach((it,i)=>o[i]= it.tier==='ess'); return o; }
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+
+function preset(kind){
+  ITEMS.forEach((it,i)=>{
+    if(kind==='none') state[i]=false;
+    else if(kind==='essentials') state[i]= it.tier==='ess';
+    else if(kind==='recommended') state[i]= (it.tier==='ess'||it.tier==='rec');
+    else if(kind==='full') state[i]=true;
+  });
+  save(); render();
+}
+
+function euro(n){ return '€'+Number(n).toLocaleString('it-IT'); }
+
+function render(){
+  const list=document.getElementById('list'); list.innerHTML='';
+  let lastCat=null;
+  const shopsHtml = SHOPS.map(s=>`<a href="${s.u}" target="_blank" rel="noopener">${s.n} ↗</a>`).join('');
+  ITEMS.forEach((it,i)=>{
+    if(it.cat!==lastCat){
+      lastCat=it.cat;
+      const catItems=ITEMS.filter(x=>x.cat===it.cat);
+      const catMid=catItems.reduce((a,b)=>a+b.mid,0);
+      list.insertAdjacentHTML('beforeend',
+        `<div class="cat">${it.cat} <span class="pill">${catItems.length} items · ~${euro(catMid)}</span></div>`);
+    }
+    const on=!!state[i];
+    const badge = it.tier==='ess'?'<span class="badge ess">essential</span>'
+      : it.tier==='rec'?'<span class="badge rec">recommended</span>'
+      : '<span class="badge opt">optional</span>';
+    list.insertAdjacentHTML('beforeend', `
+      <label class="item ${on?'checked':''}">
+        <input type="checkbox" ${on?'checked':''} onchange="toggle(${i}, this.checked)">
+        <div class="body">
+          <div class="top"><span class="name">${it.name}</span><span class="price">${euro(it.mid)}</span></div>
+          <div class="why">${it.why}</div>
+          <div class="meta">${badge}<span class="badge range">${euro(it.min)}–${euro(it.max)}</span></div>
+        </div>
+      </label>`);
+  });
+  // wire shops into footer once
+  document.getElementById('count').innerHTML = 'Shops: '+shopsHtml;
+  updateTotals();
+}
+
+function toggle(i,val){ state[i]=val; save(); render(); }
+
+function updateTotals(){
+  let mid=0, n=0, maxAll=0;
+  ITEMS.forEach((it,i)=>{ maxAll+=it.mid; if(state[i]){mid+=it.mid; n++;} });
+  document.getElementById('total').textContent=euro(mid);
+  document.getElementById('picked').textContent=`${n} of ${ITEMS.length} items selected`;
+  document.getElementById('maxtotal').textContent=euro(maxAll);
+  // low-high range of the *checked* set
+  let lo=0,hi=0; ITEMS.forEach((it,i)=>{ if(state[i]){lo+=it.min;hi+=it.max;} });
+  document.getElementById('rangelbl').textContent = n? `checked range ${euro(lo)}–${euro(hi)}` : '';
+  document.getElementById('bar').style.width = Math.round((mid/maxAll)*100)+'%';
+}
+
+render();
+</script>
+</body>
+</html>
