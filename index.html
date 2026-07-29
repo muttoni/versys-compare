@@ -204,7 +204,7 @@
 </div>
 
 <script>
-const KEY = 'versys_listings_v4';
+const KEY = 'versys_listings_v5';
 
 const DEFAULTS = [
   {
@@ -212,7 +212,7 @@ const DEFAULTS = [
     dist:130, year:'04/2025', power:'full',
     kit:'Grand Tourer trim (Moondust Grey). Warranty. No accessory list given.',
     notes:'⚠️ Seller account brand-new (April 2026), zero reviews — verify VIN/libretto in person, no pre-payment. Listing title typo\'d "versa 650".',
-    img:'https://images.sbito.it/api/v1/sbt-ads-images-pro/images/5f/5fec3572-10ca-446e-b8f4-3464ac580d6f?rule=gallery-mobile-1x-auto',
+    imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/5f/5fec3572-10ca-446e-b8f4-3464ac580d6f?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/6c/6ccbba74-81be-4f4b-ac48-27d4757e971f?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/73/7359aab8-00f4-4898-9b14-10a74c512d1a?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/74/74920cc7-cd15-4f77-be83-d039edd5abc2?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/c9/c91a8d5d-100b-498d-8033-0ac448203076?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/e5/e53e8f03-38e2-451d-831d-3e8ff46ad63d?rule=gallery-mobile-1x-auto'],
     url:'https://www.subito.it/moto-e-scooter/moto-versa-650-belluno-644585757.htm'
   },
   {
@@ -220,7 +220,7 @@ const DEFAULTS = [
     dist:45, year:'04/2025', power:'full',
     kit:'Handguards (paramani), frame sliders (tamponi). No luggage.',
     notes:'Basically new (60 km). Full warranty runway. Some price flex — been sitting. Anchor ~€6,500.',
-    img:'https://images.sbito.it/api/v1/sbt-ads-images-pro/images/14/14989de9-3782-4fe1-85dd-fa1044b20322?rule=gallery-mobile-1x-auto',
+    imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/14/14989de9-3782-4fe1-85dd-fa1044b20322?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/1b/1bfaf5e2-b79a-47da-a286-3514878f30fb?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/1c/1c25130c-ac31-4269-b28f-9fa93988b767?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/7f/7f52a3cd-8e61-4695-b072-2f7b7a501233?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/c0/c04c2171-a31a-413a-92d2-27d59dcbfd0e?rule=gallery-mobile-1x-auto'],
     url:'https://www.subito.it/moto-e-scooter/versys-650-kawasaki-vicenza-628493254.htm'
   },
   {
@@ -228,7 +228,7 @@ const DEFAULTS = [
     dist:75, year:'03/2025', power:'full',
     kit:'Handguards, USB, tinted screen (cupolino fumé), engine crash bars (paramotore), radiator guard, Barracuda tail-tidy + plate light, Barracuda front/rear indicators, aftermarket brake/clutch levers.',
     notes:'Best-equipped. Price FIRM (non trattabile). Serviced (tagliandata). No bags mentioned.',
-    img:'https://images.sbito.it/api/v1/sbt-ads-images-pro/images/1a/1aa30d98-3995-4d68-a8fe-0f719a3ffbd0?rule=gallery-mobile-1x-auto',
+    imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/1a/1aa30d98-3995-4d68-a8fe-0f719a3ffbd0?rule=gallery-mobile-1x-auto'],
     url:'https://www.subito.it/moto-e-scooter/versys-650-venezia-649697891.htm'
   },
   {
@@ -236,8 +236,16 @@ const DEFAULTS = [
     dist:120, year:'03/2025', power:'a2',
     kit:'Side panniers (+€500), USB, handguards, new tires (March), fresh service. Possibility to add GIVI bags.',
     notes:'35 kW / A2 version — de-restriction step needed for full power. Highest mileage, farthest. Still under warranty.',
-    img:'https://images.sbito.it/api/v1/sbt-ads-images-pro/images/21/21330901-180c-472a-bb7f-05cec58ca625?rule=gallery-mobile-1x-auto',
+    imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/21/21330901-180c-472a-bb7f-05cec58ca625?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/1d/1dd21c7c-d32f-4eaa-b404-abc03636bc27?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/5b/5b6dc26d-b344-4da7-936e-88770c3b0ad3?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/6e/6e2fd1c1-a06a-44a0-afaa-7482f73b1897?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/70/702f36d4-7a40-45dc-bb96-7cd898f41d6b?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/89/89c8bc2a-b05e-4084-b844-86ebff1b88f3?rule=gallery-mobile-1x-auto'],
     url:'https://www.subito.it/moto-e-scooter/kavasaki-versys-650-belluno-649569413.htm'
+  },
+  {
+    id:'verona_gt', seller:'Verona GT', loc:'Verona (VR)', price:7490, bags:0, km:3500,
+    dist:20, year:'09/2025', power:'full',
+    kit:'Grand Tourer allestimento — top box 47L + backrest + inner bag, side cases 28L+28L + inner bags, tall screen brackets, LED fog lights + relay kit, GPS bracket, tank protection, handguards, radiator guard, sidestand extension, side pads, rear fender, instrument protective film. Second pair of stands included.',
+    notes:'"Pari al nuovo", 3.5 yrs warranty left. Paid >€10k. PRICE FIRM (non trattabile). Sept 2025. WhatsApp before calling. Fully loaded — nothing left to add. Closest of all (~20 min).',
+    imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/5b/5bf1ccfc-466f-4a1f-89a9-eef6fbfef883?rule=gallery-mobile-1x-auto'],
+    url:'https://www.subito.it/moto-e-scooter/kawasaki-versys-650-grand-tourer-2025-verona-645778197.htm'
   }
 ];
 
