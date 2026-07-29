@@ -163,6 +163,16 @@
   <div class="foot">Built for Andrea · edit anytime · <span id="count"></span> listings tracked</div>
 </div>
 
+<!-- Lightbox -->
+<div class="lb" id="lb">
+  <button class="x" onclick="closeLB()">&times;</button>
+  <button class="nav prev" onclick="lbPrev()">&#8249;</button>
+  <img id="lbImg" src="" referrerpolicy="no-referrer" alt="">
+  <button class="nav next" onclick="lbNext()">&#8250;</button>
+  <div class="cap" id="lbCap"></div>
+  <div class="dots" id="lbDots"></div>
+</div>
+
 <!-- Add/Edit modal -->
 <div class="overlay" id="overlay">
   <div class="modal">
@@ -429,14 +439,5 @@ document.addEventListener('keydown',e=>{
 
 render();
 </script>
-
-<div class="lb" id="lb">
-  <button class="x" onclick="closeLB()">&times;</button>
-  <button class="nav prev" onclick="lbPrev()">&#8249;</button>
-  <img id="lbImg" src="" referrerpolicy="no-referrer" alt="">
-  <button class="nav next" onclick="lbNext()">&#8250;</button>
-  <div class="cap" id="lbCap"></div>
-  <div class="dots" id="lbDots"></div>
-</div>
 </body>
 </html>
