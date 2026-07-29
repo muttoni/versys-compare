@@ -35,6 +35,9 @@
   .rank{position:absolute;top:-10px;left:14px;font-size:12px;font-weight:700;
     background:var(--gold);color:#111;padding:3px 9px;border-radius:20px}
   .rank.silver{background:#c7ccd6}.rank.bronze{background:#cd8a4b;color:#fff}
+  .thumb{width:calc(100% + 32px);margin:-16px -16px 12px;height:170px;object-fit:cover;
+    border-radius:14px 14px 0 0;background:#20252f;display:block}
+  .thumb.ph{display:flex;align-items:center;justify-content:center;color:#4a5262;font-size:34px}
   .card h3{margin:2px 0 2px;font-size:17px;display:flex;align-items:center;gap:8px;justify-content:space-between}
   .price{font-size:22px;font-weight:800;color:var(--accent2)}
   .price small{font-size:12px;color:var(--muted);font-weight:500}
@@ -156,6 +159,7 @@
         <textarea id="f_kit" rows="2" placeholder="handguards, engine bars, radiator guard, tinted screen..."></textarea></div>
       <div class="field full"><label>Notes (seller, flexibility, red flags)</label>
         <textarea id="f_notes" rows="2" placeholder="e.g. price firm; brand-new seller account"></textarea></div>
+      <div class="field full"><label>Image URL (optional)</label><input id="f_img" placeholder="https://images.sbito.it/..."></div>
       <div class="field full"><label>Listing URL (optional)</label><input id="f_url" placeholder="https://www.subito.it/..."></div>
     </div>
     <div class="modalacts">
@@ -166,14 +170,23 @@
 </div>
 
 <script>
-const KEY = 'versys_listings_v1';
+const KEY = 'versys_listings_v2';
 
 const DEFAULTS = [
+  {
+    id:'edoardo', seller:'Edoardo', loc:'Belluno (BL)', price:6400, bags:0, km:3600,
+    dist:130, year:'04/2025', power:'full',
+    kit:'Grand Tourer trim (Moondust Grey). Warranty. No accessory list given.',
+    notes:'⚠️ Seller account brand-new (April 2026), zero reviews — verify VIN/libretto in person, no pre-payment. Listing title typo\'d "versa 650".',
+    img:'',
+    url:'https://www.subito.it/moto-e-scooter/moto-versa-650-belluno-644585757.htm'
+  },
   {
     id:'gianni', seller:'Gianni', loc:'Vicenza (VI)', price:6900, bags:0, km:60,
     dist:45, year:'04/2025', power:'full',
     kit:'Handguards (paramani), frame sliders (tamponi). No luggage.',
     notes:'Basically new (60 km). Full warranty runway. Some price flex — been sitting. Anchor ~€6,500.',
+    img:'',
     url:'https://www.subito.it/moto-e-scooter/versys-650-kawasaki-vicenza-628493254.htm'
   },
   {
@@ -181,6 +194,7 @@ const DEFAULTS = [
     dist:75, year:'03/2025', power:'full',
     kit:'Handguards, USB, tinted screen (cupolino fumé), engine crash bars (paramotore), radiator guard, Barracuda tail-tidy + plate light, Barracuda front/rear indicators, aftermarket brake/clutch levers.',
     notes:'Best-equipped. Price FIRM (non trattabile). Serviced (tagliandata). No bags mentioned.',
+    img:'',
     url:'https://www.subito.it/moto-e-scooter/versys-650-venezia-649697891.htm'
   },
   {
@@ -188,6 +202,7 @@ const DEFAULTS = [
     dist:120, year:'03/2025', power:'a2',
     kit:'Side panniers (+€500), USB, handguards, new tires (March), fresh service. Possibility to add GIVI bags.',
     notes:'35 kW / A2 version — de-restriction step needed for full power. Highest mileage, farthest. Still under warranty.',
+    img:'',
     url:'https://www.subito.it/moto-e-scooter/kavasaki-versys-650-belluno-649569413.htm'
   }
 ];
@@ -250,8 +265,12 @@ function render(){
     const kmTag = l.km<=500?'<span class="tag good">~new</span>':(l.km>=9000?'<span class="tag warn">higher km</span>':'<span class="tag info">low km</span>');
     const bagsTag = (l.bags>0)?`<span class="tag warn">bags +${euro(l.bags)}</span>`:'';
     const distTag = l.dist<=60?'<span class="tag good">close</span>':(l.dist>=110?'<span class="tag warn">far</span>':'');
+    const thumb = l.img
+      ? `<img class="thumb" src="${l.img}" alt="${l.seller}" referrerpolicy="no-referrer" loading="lazy" onerror="this.outerHTML='&lt;div class=\'thumb ph\'&gt;\ud83c\udfcd\ufe0f&lt;/div&gt;'">`
+      : `<div class="thumb ph">🏍️</div>`;
     c.insertAdjacentHTML('beforeend', `
       <div class="card ${isWin?'win':''}">
+        ${thumb}
         ${sortBy==='score'?`<div class="rank ${rankClass}">${rankByScore===0?'🥇 Best':rankByScore===1?'🥈 2nd':'🥉 3rd'}</div>`:''}
         <h3><span>${l.seller}</span><span class="price">${euro(l.price)}${l.bags>0?`<small> +${euro(l.bags)} bags</small>`:''}</span></h3>
         <div class="loc">📍 ${l.loc} · ${l.year||''}</div>
@@ -316,7 +335,7 @@ function toggleTable(){ document.getElementById('tablesec').classList.toggle('hi
 // modal
 function openAdd(){
   document.getElementById('modalTitle').textContent='Add listing';
-  ['f_id','f_seller','f_loc','f_price','f_bags','f_km','f_dist','f_year','f_kit','f_notes','f_url'].forEach(id=>document.getElementById(id).value='');
+  ['f_id','f_seller','f_loc','f_price','f_bags','f_km','f_dist','f_year','f_kit','f_notes','f_img','f_url'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f_power').value='full';
   document.getElementById('overlay').classList.add('open');
 }
@@ -325,7 +344,7 @@ function editListing(id){
   document.getElementById('modalTitle').textContent='Edit listing';
   f_id.value=l.id; f_seller.value=l.seller; f_loc.value=l.loc; f_price.value=l.price;
   f_bags.value=l.bags||0; f_km.value=l.km; f_dist.value=l.dist; f_year.value=l.year||'';
-  f_power.value=l.power; f_kit.value=l.kit||''; f_notes.value=l.notes||''; f_url.value=l.url||'';
+  f_power.value=l.power; f_kit.value=l.kit||''; f_notes.value=l.notes||''; f_img.value=l.img||''; f_url.value=l.url||'';
   document.getElementById('overlay').classList.add('open');
 }
 function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
@@ -333,7 +352,7 @@ function saveListing(){
   const id=f_id.value||('l'+Date.now());
   const obj={ id, seller:f_seller.value||'Untitled', loc:f_loc.value||'', price:+f_price.value||0,
     bags:+f_bags.value||0, km:+f_km.value||0, dist:+f_dist.value||0, year:f_year.value,
-    power:f_power.value, kit:f_kit.value, notes:f_notes.value, url:f_url.value };
+    power:f_power.value, kit:f_kit.value, notes:f_notes.value, img:f_img.value, url:f_url.value };
   const i=data.findIndex(x=>x.id===id);
   if(i>=0) data[i]=obj; else data.push(obj);
   save(); closeModal(); render();
