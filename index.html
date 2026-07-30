@@ -204,12 +204,12 @@
 </div>
 
 <script>
-const KEY = 'versys_listings_v9';
+const KEY = 'versys_listings_v10';
 
 const DEFAULTS = [
   {
     id:'edoardo', seller:'Edoardo', loc:'Belluno (BL)', price:6400, bags:0, km:3600,
-    dist:130, year:'04/2025', power:'full',
+    dist:130, year:'04/2025', listed:'2026-04-24', power:'full',
     kit:'Grand Tourer trim (Moondust Grey). USB socket + rear top box (bauletto) included. No handguards (unlike the others). Warranty.',
     notes:'⚠️ Seller account brand-new (April 2026), zero reviews — verify VIN/libretto in person, no pre-payment. Listing title typo\'d "versa 650".',
     imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/5f/5fec3572-10ca-446e-b8f4-3464ac580d6f?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/6c/6ccbba74-81be-4f4b-ac48-27d4757e971f?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/73/7359aab8-00f4-4898-9b14-10a74c512d1a?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/74/74920cc7-cd15-4f77-be83-d039edd5abc2?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/c9/c91a8d5d-100b-498d-8033-0ac448203076?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/e5/e53e8f03-38e2-451d-831d-3e8ff46ad63d?rule=gallery-mobile-1x-auto'],
@@ -217,7 +217,7 @@ const DEFAULTS = [
   },
   {
     id:'gianni', seller:'Gianni', loc:'Vicenza (VI)', price:6900, bags:0, km:60,
-    dist:45, year:'04/2025', power:'full',
+    dist:45, year:'04/2025', listed:'2026-01-22', power:'full',
     kit:'Handguards (paramani), frame sliders (tamponi). No luggage.',
     notes:'Genuinely new — 60 km, never really ridden (seller says it was a "pazzia"/impulse buy). He already paid insurance + first bollo while it sat in the garage. Full warranty runway. Some price flex — been sitting. Anchor ~€6,500.',
     imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/14/14989de9-3782-4fe1-85dd-fa1044b20322?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/1b/1bfaf5e2-b79a-47da-a286-3514878f30fb?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/1c/1c25130c-ac31-4269-b28f-9fa93988b767?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/7f/7f52a3cd-8e61-4695-b072-2f7b7a501233?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/c0/c04c2171-a31a-413a-92d2-27d59dcbfd0e?rule=gallery-mobile-1x-auto'],
@@ -225,7 +225,7 @@ const DEFAULTS = [
   },
   {
     id:'francesco', seller:'Francesco', loc:'Marcon (VE)', price:6000, bags:0, km:6500,
-    dist:75, year:'03/2025', power:'full',
+    dist:75, year:'03/2025', listed:'2026-06-05', power:'full',
     kit:'Handguards, USB, tinted screen (cupolino fumé), engine crash bars (paramotore), radiator guard, Barracuda tail-tidy + plate light, Barracuda front/rear indicators, aftermarket brake/clutch levers.',
     notes:'Best-equipped. Price FIRM (non trattabile). Serviced (tagliandata). No bags mentioned.',
     imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/1a/1aa30d98-3995-4d68-a8fe-0f719a3ffbd0?rule=gallery-mobile-1x-auto'],
@@ -233,7 +233,7 @@ const DEFAULTS = [
   },
   {
     id:'daniele', seller:'Daniele', loc:'Alpago (BL)', price:6000, bags:500, km:10000,
-    dist:120, year:'03/2025', power:'a2',
+    dist:120, year:'03/2025', listed:'2026-06-04', power:'a2',
     kit:'Side panniers (+€500), USB, handguards, new tires (March), fresh service. Possibility to add GIVI bags.',
     notes:'35 kW / A2 version — de-restriction step needed for full power. Highest mileage, farthest. Still under warranty.',
     imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/21/21330901-180c-472a-bb7f-05cec58ca625?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/1d/1dd21c7c-d32f-4eaa-b404-abc03636bc27?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/5b/5b6dc26d-b344-4da7-936e-88770c3b0ad3?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/6e/6e2fd1c1-a06a-44a0-afaa-7482f73b1897?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/70/702f36d4-7a40-45dc-bb96-7cd898f41d6b?rule=gallery-mobile-1x-auto','https://images.sbito.it/api/v1/sbt-ads-images-pro/images/89/89c8bc2a-b05e-4084-b844-86ebff1b88f3?rule=gallery-mobile-1x-auto'],
@@ -241,7 +241,7 @@ const DEFAULTS = [
   },
   {
     id:'massimo', seller:'Massimo', loc:'Verona (VR)', price:7490, bags:0, km:3500,
-    dist:20, year:'09/2025', power:'full',
+    dist:20, year:'09/2025', listed:'2026-05-04', power:'full',
     kit:'Grand Tourer allestimento — top box 47L + backrest + inner bag, side cases 28L+28L + inner bags, tall screen brackets, LED fog lights + relay kit, GPS bracket, tank protection, handguards, radiator guard, sidestand extension, side pads, rear fender, instrument protective film. Second pair of stands included.',
     notes:'"Pari al nuovo", 3.5 yrs warranty left. Paid >€10k. PRICE FIRM (non trattabile). Sept 2025. WhatsApp before calling. Fully loaded — nothing left to add. Closest of all (~20 min).',
     imgs:['https://images.sbito.it/api/v1/sbt-ads-images-pro/images/5b/5bf1ccfc-466f-4a1f-89a9-eef6fbfef883?rule=gallery-mobile-1x-auto'],
@@ -288,6 +288,8 @@ function scoreOf(l, wantBags, arr){
 
 function fmtDist(m){ if(m>=60){const h=Math.floor(m/60),mm=m%60; return `~${h}h${mm?String(mm).padStart(2,'0'):''}`;} return `~${m} min`; }
 function euro(n){ return '€'+Number(n).toLocaleString('it-IT'); }
+function daysOnline(listed){ if(!listed) return null; const d=new Date(listed+'T00:00:00'); if(isNaN(d)) return null; return Math.max(0, Math.round((Date.now()-d.getTime())/86400000)); }
+function staleTag(listed){ const n=daysOnline(listed); if(n==null) return ''; let cls='info', label; if(n>=120){cls='good'; label=`🔥 ${n}d online — very stale`;} else if(n>=60){cls='good'; label=`🔥 ${n}d online — stale`;} else if(n>=28){cls='warn'; label=`${n}d online`;} else {cls='info'; label=`${n}d online — fresh`;} return `<span class="tag ${cls}" title="Listed ${listed}">${label}</span>`; }
 
 function render(){
   const wantBags = document.getElementById('wantBags').checked;
@@ -335,7 +337,7 @@ function render(){
         ${sortBy==='score'?`<div class="rank ${rankClass}">${rankByScore===0?'🥇 Best':rankByScore===1?'🥈 2nd':'🥉 3rd'}</div>`:''}
         <h3><span>${l.seller}</span><span class="price">${euro(l.price)}${l.bags>0?`<small> +${euro(l.bags)} bags</small>`:''}</span></h3>
         <div class="loc">📍 ${l.loc} · ${l.year||''}</div>
-        <div>${modelTag}${powTag}${kmTag}${distTag}${bagsTag}</div>
+        <div>${modelTag}${powTag}${kmTag}${distTag}${bagsTag}${staleTag(l.listed)}</div>
         <div class="rows" style="margin-top:8px">
           <div class="row"><span class="k">Mileage</span><span class="v">${Number(l.km).toLocaleString('it-IT')} km</span></div>
           <div class="row"><span class="k">Distance</span><span class="v">${fmtDist(l.dist)}</span></div>
